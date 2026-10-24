@@ -48,21 +48,34 @@ export const EDITORIAL_MILESTONES: MilestoneItem[] = [
 interface EditorialTimelineProps {
   initialActiveYear?: string;
   className?: string;
+  onBack?: () => void;
 }
 
 export function EditorialTimeline({
   initialActiveYear = '2020',
   className = '',
+  onBack,
 }: EditorialTimelineProps) {
   const [activeYear, setActiveYear] = useState<string>(initialActiveYear);
 
   return (
     <section
       aria-label="Path to Innovation Timeline"
-      className={`w-full bg-[#F9F4ED] text-[#2A2A2A] font-poppins selection:bg-[#AF695C]/20 selection:text-[#2A2A2A] py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-12 ${className}`}
+      className={`w-full bg-[#F9F4ED] text-[#2A2A2A] font-poppins selection:bg-[#AF695C]/20 selection:text-[#2A2A2A] py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-12 ${className}`}
       style={{ fontFamily: "'Poppins', sans-serif" }}
     >
       <div className="max-w-7xl mx-auto flex flex-col items-center">
+        {onBack && (
+          <div className="w-full flex justify-start mb-8">
+            <button
+              type="button"
+              onClick={onBack}
+              className="text-xs font-medium text-[#77716D] hover:text-[#2A2A2A] transition flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-[#D8D0C8] hover:bg-[#EDEAEA]"
+            >
+              <span>← Back to Newspaper Studio</span>
+            </button>
+          </div>
+        )}
         {/* Main Headline */}
         <header className="text-center mb-16 sm:mb-20 lg:mb-24 max-w-4xl">
           <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold uppercase text-[#2A2A2A] tracking-[-0.03em] leading-[0.95] sm:leading-[0.92]">

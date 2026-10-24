@@ -295,7 +295,7 @@ export default function App() {
       {/* Main Content Area */}
       {activeView === 'innovation' ? (
         <main className="flex-1 w-full bg-[#F9F4ED]">
-          <EditorialTimeline />
+          <EditorialTimeline onBack={() => setActiveView('newspaper')} />
         </main>
       ) : (
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center">
@@ -354,6 +354,19 @@ export default function App() {
             </div>
 
             <UploadScreen onUpload={handleUpload} isLoading={isLoading} initialFile={retryFile} />
+
+            {/* Editorial Timeline Showcase Button */}
+            <div className="pt-2 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setActiveView('innovation')}
+                className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#F9F4ED] dark:bg-stone-900 border border-[#AF695C]/40 hover:border-[#AF695C] text-[#2A2A2A] dark:text-stone-200 text-xs font-semibold shadow-sm hover:shadow transition group"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#AF695C] group-hover:scale-125 transition-transform" />
+                <span>Explore Timeline Design: Path to Innovation</span>
+                <span className="text-[#AF695C] group-hover:translate-x-0.5 transition-transform">→</span>
+              </button>
+            </div>
           </div>
         )}
 
