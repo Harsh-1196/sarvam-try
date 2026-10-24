@@ -1,24 +1,59 @@
-import { Calendar, AlertCircle, Clock, ExternalLink, BookOpen, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calendar, AlertCircle, ExternalLink, BookOpen, Sparkles } from 'lucide-react';
 import type { TimelineEvent, Source } from '../types';
 
 interface TimelineProps {
   events: TimelineEvent[];
   sources: Source[];
+  highlightedEventIndex?: number | null;
   onOpenArticleReader?: (source: Source) => void;
   onSelectCitation?: (sourceId: string, quote?: string) => void;
 }
 
 // Fallback high-contrast news editorial illustrations for timeline events
 const EDITORIAL_NEWS_IMAGES = [
-  'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80', // Newspaper / Newsroom
-  'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=800&q=80', // Renewable solar
-  'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80', // Clean energy wind
-  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80', // Global technology
-  'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80', // Financial / Economy
+  'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80',
 ];
 
-export function Timeline({ events, sources, onOpenArticleReader, onSelectCitation }: TimelineProps) {
+export function Timeline({
+  events,
+  sources,
+  highlightedEventIndex,
+  onOpenArticleReader,
+  onSelectCitation,
+}: TimelineProps) {
+  const [activeEventIndex, setActiveEventIndex] = useState<number>(0);
   const sourceMap = new Map(sources.map((s) => [s.id, s]));
+
+  // Sync with audio narration highlight if provided
+  const selectedIndex =
+    highlightedEventIndex !== undefined && highlightedEventIndex !== null && highlightedEventIndex >= 0
+      ? highlightedEventIndex
+      : activeEventIndex;
+
+  const extractYearOrShortDate = (event: TimelineEvent): string => {
+    if (!event.event_date) return 'Timeline';
+    if (event.event_date.length >= 4) {
+      const year = event.event_date.slice(0, 4);
+      // If full date like YYYY-MM-DD, return Month Year or Year
+      if (event.event_date.length >= 7) {
+        try {
+          const d = new Date(event.event_date);
+          if (!isNaN(d.getTime())) {
+            return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+          }
+        } catch {
+          return year;
+        }
+      }
+      return year;
+    }
+    return event.event_date;
+  };
 
   const formatPrecisionDate = (event: TimelineEvent): string => {
     if (!event.event_date) return 'Unknown Date';
@@ -27,25 +62,33 @@ export function Timeline({ events, sources, onOpenArticleReader, onSelectCitatio
     }
     if (event.date_precision === 'month') {
       const d = new Date(event.event_date);
-      return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      return !isNaN(d.getTime())
+        ? d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+        : event.event_date;
     }
-    return event.event_date;
+    try {
+      const d = new Date(event.event_date);
+      return !isNaN(d.getTime())
+        ? d.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+        : event.event_date;
+    } catch {
+      return event.event_date;
+    }
   };
 
   const handleSourceClick = (e: React.MouseEvent, sourceId: string) => {
-    e.stopPropagation(); // Do not trigger card click
+    e.stopPropagation();
     const src = sourceMap.get(sourceId);
     if (src && src.url) {
-      // Direct user to actual live web article in a new tab (User Request #6)
       window.open(src.url, '_blank', 'noopener,noreferrer');
     } else if (onSelectCitation) {
       onSelectCitation(sourceId);
     }
   };
 
-  const handleCardClick = (event: TimelineEvent) => {
+  const handleCardClick = (event: TimelineEvent, idx: number) => {
+    setActiveEventIndex(idx);
     if (!onOpenArticleReader) return;
-    // Find the primary evidence source for this timeline event
     const primarySourceId = event.evidence[0]?.source_id;
     const src = sourceMap.get(primarySourceId) || sources[0];
     if (src) {
@@ -53,144 +96,253 @@ export function Timeline({ events, sources, onOpenArticleReader, onSelectCitatio
     }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Timeline Section Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-200/80 dark:border-white/10">
-        <div className="flex items-center space-x-2.5">
-          <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-            <Clock className="w-4 h-4" />
-          </div>
-          <h3 className="font-serif font-bold text-lg sm:text-xl text-slate-900 dark:text-slate-50 tracking-tight">
-            Chronological Event Timeline
-          </h3>
-          <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-mono font-semibold">
-            {events.length} Events
-          </span>
-        </div>
+  if (!events || events.length === 0) {
+    return null;
+  }
 
-        <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium hidden sm:inline-block">
-          Click any card to read full translated article &amp; audio summary
+  return (
+    <section
+      aria-label="Chronological Event Timeline"
+      className="w-full bg-[#F9F4ED] dark:bg-[#1F1D1B] rounded-[32px] p-6 sm:p-10 lg:p-12 border border-[#D8D0C8] dark:border-[#3E3835] space-y-12"
+      style={{ fontFamily: "'Poppins', sans-serif" }}
+    >
+      {/* Prominent Centered Heading (Image 2 Structure) */}
+      <div className="text-center max-w-3xl mx-auto space-y-3">
+        <span className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-semibold bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] text-[#AF695C] tracking-wider uppercase">
+          Evidence-Linked Chronology
         </span>
+        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase text-[#2A2A2A] dark:text-[#F9F4ED] tracking-[-0.03em] leading-tight">
+          Chronological
+          <br className="hidden sm:inline" /> Event Timeline
+        </h2>
+        <p className="text-xs sm:text-sm text-[#77716D] max-w-xl mx-auto">
+          Interactive verified timeline cross-referenced from live news sources. Click any milestone node or card to read the full translated report.
+        </p>
       </div>
 
-      <div className="relative pl-6 sm:pl-8 border-l-2 border-indigo-200 dark:border-indigo-900/60 space-y-8">
-        {events.map((event, idx) => {
-          const dateLabel = formatPrecisionDate(event);
-          const isUnverified = event.verification === 'unverified';
+      {/* =========================================================================
+          HORIZONTAL TIMELINE & MILESTONE CARDS (Following Image 2)
+      ========================================================================= */}
+      <div className="w-full">
+        {/* Horizontal Track & Milestone Nodes */}
+        <div className="relative mb-8 sm:mb-12 px-2 sm:px-4 overflow-x-auto pb-4 no-scrollbar">
+          <div className="min-w-[320px] relative">
+            {/* Horizontal Connecting Line between first and last node */}
+            <div
+              className="absolute top-[34px] -translate-y-1/2 h-[2px] bg-[#D8D0C8] dark:bg-[#3E3835] z-0"
+            style={{
+              left: `${100 / (events.length * 2)}%`,
+              right: `${100 / (events.length * 2)}%`,
+            }}
+            aria-hidden="true"
+          />
 
-          // Resolve image for this event
-          let eventImg = event.image_url;
-          if (!eventImg) {
-            for (const ev of event.evidence) {
-              const s = sourceMap.get(ev.source_id);
-              if (s && s.image_url) {
-                eventImg = s.image_url;
-                break;
+          {/* Node Grid across all events */}
+          <div
+            className="grid gap-4 relative z-10"
+            style={{
+              gridTemplateColumns: `repeat(${events.length}, minmax(0, 1fr))`,
+            }}
+            role="tablist"
+            aria-label="Event Milestones"
+          >
+            {events.map((event, idx) => {
+              const isActive = selectedIndex === idx;
+              const yearLabel = extractYearOrShortDate(event);
+
+              return (
+                <button
+                  key={event.id}
+                  type="button"
+                  role="tab"
+                  id={`timeline-tab-${event.id}`}
+                  aria-selected={isActive}
+                  aria-controls={`timeline-panel-${event.id}`}
+                  onClick={() => setActiveEventIndex(idx)}
+                  className="flex flex-col items-center group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#AF695C] rounded-xl py-1 transition-transform"
+                >
+                  {/* Year/Date Label above the node */}
+                  <span
+                    className={`text-xs sm:text-sm tracking-tight transition-colors duration-200 mb-3 truncate max-w-[140px] text-center ${
+                      isActive
+                        ? 'text-[#AF695C] font-bold scale-105'
+                        : 'text-[#77716D] font-medium group-hover:text-[#2A2A2A] dark:group-hover:text-[#F9F4ED]'
+                    }`}
+                  >
+                    {yearLabel}
+                  </span>
+
+                  {/* Timeline Node Dot */}
+                  <div
+                    className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      isActive
+                        ? 'bg-[#AF695C] ring-4 ring-[#AF695C]/25 scale-110 shadow-sm'
+                        : 'bg-[#EDEAEA] dark:bg-[#282523] border-2 border-[#D8D0C8] dark:border-[#3E3835] group-hover:border-[#AF695C] group-hover:bg-[#F9F4ED]'
+                    }`}
+                  >
+                    {isActive && <div className="w-2 h-2 rounded-full bg-[#F9F4ED]" />}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Milestone Cards Grid (beneath the timeline nodes) */}
+        <div
+          className={`grid gap-6 lg:gap-8 items-stretch ${
+            events.length === 1
+              ? 'grid-cols-1 max-w-xl mx-auto'
+              : events.length === 2
+              ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'
+              : events.length === 3
+              ? 'grid-cols-1 md:grid-cols-3'
+              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'
+          }`}
+        >
+          {events.map((event, idx) => {
+            const isActive = selectedIndex === idx;
+            const dateLabel = formatPrecisionDate(event);
+            const isUnverified = event.verification === 'unverified';
+
+            // Resolve image for this event
+            let eventImg = event.image_url;
+            if (!eventImg) {
+              for (const ev of event.evidence) {
+                const s = sourceMap.get(ev.source_id);
+                if (s && s.image_url) {
+                  eventImg = s.image_url;
+                  break;
+                }
               }
             }
-          }
-          if (!eventImg) {
-            eventImg = EDITORIAL_NEWS_IMAGES[idx % EDITORIAL_NEWS_IMAGES.length];
-          }
+            if (!eventImg) {
+              eventImg = EDITORIAL_NEWS_IMAGES[idx % EDITORIAL_NEWS_IMAGES.length];
+            }
 
-          return (
-            <div key={event.id} className="relative group">
-              {/* Timeline Node Dot */}
-              <div className="absolute -left-[31px] sm:-left-[39px] top-2.5 w-4 h-4 rounded-full border-2 border-indigo-500 bg-white dark:bg-slate-950 group-hover:scale-125 group-hover:border-rose-500 transition-all duration-200 shadow-sm" />
-
-              {/* Event Card (Clickable to open Reader Panel) */}
+            return (
               <div
-                onClick={() => handleCardClick(event)}
-                className="rounded-3xl glass-card glass-card-interactive border border-slate-200/80 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-xl transition-all cursor-pointer group/card flex flex-col sm:flex-row"
+                key={event.id}
+                id={`timeline-panel-${event.id}`}
+                role="tabpanel"
+                aria-labelledby={`timeline-tab-${event.id}`}
+                tabIndex={0}
+                onClick={() => handleCardClick(event, idx)}
+                className={`rounded-[28px] p-6 lg:p-7 flex flex-col justify-between transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#AF695C] group/card ${
+                  isActive
+                    ? 'bg-[#F9F4ED] dark:bg-[#1F1D1B] border-2 border-[#AF695C] shadow-md transform -translate-y-1'
+                    : 'bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] hover:border-[#AF695C] hover:-translate-y-0.5'
+                }`}
               >
-                {/* Event Article Visual Image (User Request #5) */}
-                <div className="sm:w-56 md:w-64 h-48 sm:h-auto relative overflow-hidden bg-slate-900 flex-shrink-0">
-                  <img
-                    src={eventImg}
-                    alt={event.title}
-                    className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    onError={(e) => {
-                      // Fallback to editorial placeholder if image link breaks
-                      (e.target as HTMLImageElement).src = EDITORIAL_NEWS_IMAGES[0];
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-3">
-                    <span className="text-[11px] font-mono text-white/90 bg-black/50 backdrop-blur px-2 py-0.5 rounded-lg border border-white/10 flex items-center space-x-1">
-                      <BookOpen className="w-3 h-3 text-indigo-400" />
-                      <span>Click to Read</span>
-                    </span>
+                <div className="space-y-4">
+                  {/* Article Thumbnail Image */}
+                  <div className="w-full h-36 rounded-2xl overflow-hidden relative bg-stone-900 shadow-inner">
+                    <img
+                      src={eventImg}
+                      alt={event.title}
+                      className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = EDITORIAL_NEWS_IMAGES[0];
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+                      <span className="text-[10px] font-mono text-white/90 bg-black/50 backdrop-blur px-2 py-0.5 rounded-lg border border-white/10 flex items-center space-x-1">
+                        <BookOpen className="w-2.5 h-2.5 text-[#AF695C]" />
+                        <span>Click to Read</span>
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Event Content Body */}
-                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    {/* Header Badge Row */}
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 border border-indigo-200/50 dark:border-indigo-800/50">
-                          {event.id}
-                        </span>
-                        <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-                          <Calendar className="w-3 h-3 text-slate-400" />
-                          <span>{dateLabel}</span>
-                        </span>
-                      </div>
-
-                      {isUnverified && (
-                        <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
-                          <AlertCircle className="w-3 h-3 text-amber-500" />
-                          <span>Unverified Details</span>
+                  {/* Header: Milestone Label and Date */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span
+                        className={`text-xs uppercase font-semibold tracking-wider ${
+                          isActive ? 'text-[#AF695C]' : 'text-[#77716D]'
+                        }`}
+                      >
+                        Milestone {idx + 1}
+                      </span>
+                      {isActive && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#AF695C]/15 text-[#AF695C]">
+                          Selected
                         </span>
                       )}
                     </div>
 
-                    {/* Title & Description */}
-                    <h4 className="text-base sm:text-lg font-serif font-bold text-slate-900 dark:text-slate-50 group-hover/card:text-indigo-600 dark:group-hover/card:text-indigo-400 transition-colors leading-snug" dir="auto">
-                      {event.title}
-                    </h4>
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed" dir="auto">
-                      {event.description}
-                    </p>
-                  </div>
-
-                  {/* Sources Row (Clicking goes directly to publisher website - User Request #6) */}
-                  <div className="pt-3 border-t border-slate-100 dark:border-white/5 flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1">
-                        Sources:
-                      </span>
-                      {event.evidence.map((ev, i) => {
-                        const s = sourceMap.get(ev.source_id);
-                        return (
-                          <button
-                            key={`${ev.source_id}-${i}`}
-                            type="button"
-                            onClick={(e) => handleSourceClick(e, ev.source_id)}
-                            className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-xl text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 shadow-sm transition"
-                            title={s?.url ? `Open external article on ${s.publisher || 'publisher website'}` : 'View source'}
-                          >
-                            <span className="font-mono text-indigo-600 dark:text-indigo-400 font-bold">[{ev.source_id}]</span>
-                            <span className="max-w-[120px] truncate">{s?.publisher || s?.title || 'Source'}</span>
-                            {s?.url && <ExternalLink className="w-2.5 h-2.5 text-slate-400" />}
-                          </button>
-                        );
-                      })}
+                    <div className="flex items-center space-x-1.5 text-xs text-[#77716D] mb-2">
+                      <Calendar className="w-3.5 h-3.5 text-[#AF695C]" />
+                      <span className="font-medium">{dateLabel}</span>
                     </div>
 
-                    <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center space-x-1 group-hover/card:translate-x-1 transition-transform">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>Read Full Article &amp; Audio Summary →</span>
+                    {isUnverified && (
+                      <div className="mb-2 inline-flex items-center space-x-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-[#AF695C]/10 text-[#AF695C] border border-[#AF695C]/20">
+                        <AlertCircle className="w-3 h-3 text-[#AF695C]" />
+                        <span>Unverified Details</span>
+                      </div>
+                    )}
+
+                    <h3
+                      className={`text-lg sm:text-xl font-bold tracking-tight leading-snug ${
+                        isActive ? 'text-[#2A2A2A] dark:text-[#F9F4ED]' : 'text-[#2A2A2A] dark:text-[#EDEAEA]'
+                      }`}
+                      dir="auto"
+                    >
+                      {event.title}
+                    </h3>
+                  </div>
+
+                  {/* Description */}
+                  <p
+                    className={`text-xs sm:text-sm leading-relaxed ${
+                      isActive ? 'text-[#2A2A2A] dark:text-[#EDEAEA]' : 'text-[#77716D]'
+                    }`}
+                    dir="auto"
+                  >
+                    {event.description}
+                  </p>
+                </div>
+
+                {/* Sources Row with thin divider */}
+                <div className="pt-4 mt-4 border-t border-[#D8D0C8] dark:border-[#3E3835] space-y-2">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#77716D]">
+                      Sources:
                     </span>
+                    {event.evidence.map((ev, i) => {
+                      const s = sourceMap.get(ev.source_id);
+                      return (
+                        <button
+                          key={`${ev.source_id}-${i}`}
+                          type="button"
+                          onClick={(e) => handleSourceClick(e, ev.source_id)}
+                          className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-[#F9F4ED] dark:bg-[#1F1D1B] border border-[#D8D0C8] dark:border-[#3E3835] text-[#2A2A2A] dark:text-[#EDEAEA] hover:border-[#AF695C] hover:text-[#AF695C] shadow-sm transition"
+                          title={s?.url ? `Open external report on ${s.publisher || 'publisher website'}` : 'View source'}
+                        >
+                          <span className="font-mono text-[#AF695C] font-bold">[{ev.source_id}]</span>
+                          <span className="max-w-[90px] truncate">{s?.publisher || s?.title || 'Source'}</span>
+                          {s?.url && <ExternalLink className="w-2.5 h-2.5 text-[#77716D]" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs font-semibold text-[#AF695C] pt-1">
+                    <span className="flex items-center space-x-1">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Read Full Report</span>
+                    </span>
+                    <span className="group-hover/card:translate-x-1 transition-transform">→</span>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+
+    </section>
   );
 }

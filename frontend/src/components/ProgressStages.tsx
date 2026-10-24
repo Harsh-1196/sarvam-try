@@ -104,29 +104,29 @@ export function ProgressStages({ currentStage, mode = 'story' }: ProgressStagesP
   const progressPercent = Math.min(100, Math.round(((activeIndex + 0.5) / stages.length) * 100));
 
   return (
-    <div className="max-w-4xl mx-auto w-full p-6 sm:p-8 rounded-3xl glass-card border border-slate-200/80 dark:border-white/10 shadow-2xl animate-in fade-in duration-300">
+    <div className="max-w-4xl mx-auto w-full p-6 sm:p-8 rounded-[28px] bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] shadow-md animate-in fade-in duration-300">
       {/* Header Info */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 dark:border-white/5 gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-[#D8D0C8] dark:border-[#3E3835] gap-3">
         <div className="flex items-center space-x-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-rose-500/20">
+          <div className="w-11 h-11 rounded-2xl bg-[#AF695C] text-[#F9F4ED] flex items-center justify-center shadow-sm">
             <Cpu className="w-5 h-5 animate-pulse" />
           </div>
           <div>
-            <h3 className="font-serif font-bold text-lg sm:text-xl text-slate-900 dark:text-slate-50 tracking-tight">
+            <h3 className="font-bold text-lg sm:text-xl text-[#2A2A2A] dark:text-[#F9F4ED] tracking-tight">
               {mode === 'ocr' ? 'Analyzing Newspaper Scan' : 'Building Evidence-Linked Story'}
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-[#77716D]">
               Sarvam AI Multilingual Reasoning &amp; Evidence Validation
             </p>
           </div>
         </div>
 
         <div className="flex items-center space-x-2 self-start sm:self-auto">
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-mono font-semibold">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-ping" />
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#F9F4ED] dark:bg-[#1F1D1B] border border-[#D8D0C8] dark:border-[#3E3835] text-[#AF695C] text-xs font-mono font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#AF695C] animate-ping" />
             <span>{elapsed}s elapsed</span>
           </div>
-          <span className="text-xs font-mono font-bold text-slate-400 dark:text-slate-500">
+          <span className="text-xs font-mono font-bold text-[#77716D]">
             {progressPercent}%
           </span>
         </div>
@@ -136,11 +136,11 @@ export function ProgressStages({ currentStage, mode = 'story' }: ProgressStagesP
       <div className="py-8">
         <div className="relative">
           {/* Background Connecting Bar */}
-          <div className="absolute top-1/2 left-4 right-4 -translate-y-1/2 h-1 bg-slate-200 dark:bg-slate-800 rounded-full z-0 hidden sm:block" />
+          <div className="absolute top-1/2 left-4 right-4 -translate-y-1/2 h-1 bg-[#D8D0C8] dark:bg-[#3E3835] rounded-full z-0 hidden sm:block" />
 
           {/* Active Progress Gradient Bar */}
           <div 
-            className="absolute top-1/2 left-4 -translate-y-1/2 h-1 bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600 rounded-full z-0 transition-all duration-700 hidden sm:block"
+            className="absolute top-1/2 left-4 -translate-y-1/2 h-1 bg-[#AF695C] rounded-full z-0 transition-all duration-700 hidden sm:block"
             style={{ width: `calc(${progressPercent}% - 2rem)` }}
           />
 
@@ -159,18 +159,18 @@ export function ProgressStages({ currentStage, mode = 'story' }: ProgressStagesP
                   onClick={() => setSelectedStageIndex(idx)}
                   className={`flex flex-col items-center text-center p-3 rounded-2xl transition-all cursor-pointer group ${
                     isInspected 
-                      ? 'bg-slate-100/90 dark:bg-white/10 ring-2 ring-indigo-500/50 scale-105' 
-                      : 'hover:bg-slate-50 dark:hover:bg-white/5'
+                      ? 'bg-[#F9F4ED] dark:bg-[#1F1D1B] ring-2 ring-[#AF695C] scale-105 shadow-sm' 
+                      : 'hover:bg-[#F9F4ED]/60 dark:hover:bg-[#1F1D1B]/40'
                   }`}
                 >
                   {/* Node Circle */}
                   <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-md ${
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-sm ${
                       isDone
-                        ? 'bg-emerald-600 text-white shadow-emerald-500/20'
+                        ? 'bg-[#AF695C] text-[#F9F4ED]'
                         : isCurrent
-                        ? 'bg-gradient-to-tr from-amber-500 to-rose-600 text-white ring-4 ring-rose-500/20 animate-subtle-pulse'
-                        : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500'
+                        ? 'bg-[#F9F4ED] dark:bg-[#1F1D1B] text-[#AF695C] border-2 border-[#AF695C] ring-4 ring-[#AF695C]/20'
+                        : 'bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] text-[#77716D]'
                     }`}
                   >
                     {isDone ? (
@@ -186,16 +186,16 @@ export function ProgressStages({ currentStage, mode = 'story' }: ProgressStagesP
                   <span
                     className={`text-xs font-bold mt-2.5 transition-colors ${
                       isCurrent
-                        ? 'text-rose-600 dark:text-rose-400 font-extrabold'
+                        ? 'text-[#AF695C] font-extrabold'
                         : isDone
-                        ? 'text-slate-800 dark:text-slate-200'
-                        : 'text-slate-400 dark:text-slate-500'
+                        ? 'text-[#2A2A2A] dark:text-[#F9F4ED]'
+                        : 'text-[#77716D]'
                     }`}
                   >
                     {stage.shortLabel}
                   </span>
                   
-                  <span className="text-[10px] text-slate-400 dark:text-slate-500 hidden sm:block">
+                  <span className="text-[10px] text-[#77716D] hidden sm:block">
                     Step {idx + 1}
                   </span>
                 </button>
@@ -206,29 +206,29 @@ export function ProgressStages({ currentStage, mode = 'story' }: ProgressStagesP
       </div>
 
       {/* Interactive Micro-Details Panel */}
-      <div className="p-4.5 rounded-2xl bg-gradient-to-r from-slate-50 via-indigo-50/30 to-amber-50/20 dark:from-slate-900/90 dark:via-indigo-950/20 dark:to-slate-900/90 border border-slate-200/80 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="p-4.5 rounded-2xl bg-[#F9F4ED] dark:bg-[#1F1D1B] border border-[#D8D0C8] dark:border-[#3E3835] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 shadow-sm">
+          <div className="w-8 h-8 rounded-xl bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] flex items-center justify-center text-[#AF695C] flex-shrink-0 shadow-sm">
             <inspectedStage.icon className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+              <span className="text-xs font-bold text-[#2A2A2A] dark:text-[#F9F4ED]">
                 {inspectedStage.label}
               </span>
               {inspectedIndex === activeIndex && (
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 animate-pulse">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#AF695C]/15 text-[#AF695C] border border-[#AF695C]/30 animate-pulse">
                   Live Stage
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-[#77716D] mt-0.5">
               {inspectedStage.description}
             </p>
           </div>
         </div>
 
-        <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono bg-white/80 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 self-start sm:self-auto">
+        <div className="text-[11px] text-[#77716D] font-mono bg-[#EDEAEA] dark:bg-[#282523] px-3 py-1.5 rounded-xl border border-[#D8D0C8] dark:border-[#3E3835] self-start sm:self-auto">
           {inspectedStage.detail}
         </div>
       </div>

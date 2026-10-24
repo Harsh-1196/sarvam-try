@@ -42,26 +42,26 @@ export function HeadlinePicker({
     <div className="max-w-3xl mx-auto w-full space-y-6 animate-in fade-in duration-300">
       {/* Header */}
       <div className="text-center sm:text-left">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-semibold mb-2">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] text-[#AF695C] text-xs font-semibold mb-2">
+          <CheckCircle2 className="w-3.5 h-3.5 text-[#AF695C]" />
           <span>Newspaper Digitized Successfully</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#2A2A2A] dark:text-[#F9F4ED]">
           Select Headline to Investigate
         </h2>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-[#77716D] mt-1">
           Pick an identified article headline to discover web sources, trace timelines, and build an evidence story.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Candidates Selection Grid / List */}
-        <div className="p-6 rounded-3xl glass-card space-y-3">
+        <div className="p-6 rounded-[28px] bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] space-y-3">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#77716D]">
               Identified Headlines ({candidates.length})
             </span>
-            <span className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium">
+            <span className="text-[11px] text-[#AF695C] font-medium">
               Click any card to select
             </span>
           </div>
@@ -73,17 +73,17 @@ export function HeadlinePicker({
                 <div
                   key={cand.id}
                   onClick={() => handleSelect(cand)}
-                  className={`p-4.5 rounded-2xl cursor-pointer transition-all flex items-start space-x-4 border ${
+                  className={`p-5 rounded-[22px] cursor-pointer transition-all flex items-start space-x-4 border ${
                     isSelected
-                      ? 'border-indigo-500 bg-indigo-50/80 dark:bg-indigo-950/40 ring-2 ring-indigo-500/30 shadow-md shadow-indigo-500/5'
-                      : 'border-slate-200/80 dark:border-slate-800 bg-white/60 dark:bg-slate-900/40 hover:border-slate-300 dark:hover:border-slate-700'
+                      ? 'border-2 border-[#AF695C] bg-[#F9F4ED] dark:bg-[#1F1D1B] shadow-sm transform -translate-y-0.5'
+                      : 'border-[#D8D0C8] dark:border-[#3E3835] bg-[#F9F4ED]/50 dark:bg-[#1F1D1B]/50 hover:border-[#AF695C]'
                   }`}
                 >
                   <div
                     className={`w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
                       isSelected
-                        ? 'border-indigo-600 bg-indigo-600 text-white'
-                        : 'border-slate-300 dark:border-slate-600 bg-transparent'
+                        ? 'border-[#AF695C] bg-[#AF695C] text-[#F9F4ED]'
+                        : 'border-[#D8D0C8] dark:border-[#3E3835] bg-transparent'
                     }`}
                   >
                     {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -91,21 +91,21 @@ export function HeadlinePicker({
 
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`text-sm sm:text-base font-semibold leading-snug transition-colors ${
+                      className={`text-sm sm:text-base leading-snug transition-colors ${
                         isSelected
-                          ? 'text-indigo-950 dark:text-indigo-100 font-bold'
-                          : 'text-slate-800 dark:text-slate-200'
+                          ? 'text-[#2A2A2A] dark:text-[#F9F4ED] font-bold'
+                          : 'text-[#2A2A2A] dark:text-[#EDEAEA]'
                       }`}
                       dir="auto"
                     >
                       {cand.text}
                     </p>
-                    <div className="flex items-center space-x-2 mt-2 text-[11px] text-slate-500 dark:text-slate-400">
-                      <span className="font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center space-x-2 mt-2 text-[11px] text-[#77716D]">
+                      <span className="font-mono px-2 py-0.5 rounded-md bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] text-[#2A2A2A] dark:text-[#EDEAEA]">
                         {cand.id}
                       </span>
                       <span>•</span>
-                      <span className="font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="font-medium text-[#AF695C]">
                         {Math.round(cand.confidence * 100)}% match confidence
                       </span>
                     </div>
@@ -119,16 +119,16 @@ export function HeadlinePicker({
         {/* Story Metadata & Preferences (Date & Language) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Publication Date Badge & Input */}
-          <div className="p-4.5 rounded-3xl glass-card flex flex-col justify-between space-y-2">
+          <div className="p-5 rounded-[24px] bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] flex flex-col justify-between space-y-2">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-[#AF695C]/10 border border-[#AF695C]/20 text-[#AF695C] flex items-center justify-center">
                 <Calendar className="w-4 h-4" />
               </div>
               <div>
-                <label htmlFor="pub-date" className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 block">
+                <label htmlFor="pub-date" className="text-xs font-bold uppercase tracking-wider text-[#2A2A2A] dark:text-[#F9F4ED] block">
                   Publication Date
                 </label>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                <p className="text-[11px] text-[#77716D]">
                   {initialDate ? 'Detected from masthead' : 'Undetected (optional)'}
                 </p>
               </div>
@@ -139,21 +139,21 @@ export function HeadlinePicker({
               type="date"
               value={newspaperDate}
               onChange={(e) => setNewspaperDate(e.target.value)}
-              className="w-full px-3 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#F9F4ED] dark:bg-[#1F1D1B] border border-[#D8D0C8] dark:border-[#3E3835] text-[#2A2A2A] dark:text-[#F9F4ED] focus:outline-none focus:ring-2 focus:ring-[#AF695C]"
             />
           </div>
 
           {/* Story Output Language Selector */}
-          <div className="p-4.5 rounded-3xl glass-card flex flex-col justify-between space-y-2">
+          <div className="p-5 rounded-[24px] bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] flex flex-col justify-between space-y-2">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-[#AF695C]/10 border border-[#AF695C]/20 text-[#AF695C] flex items-center justify-center">
                 <Globe className="w-4 h-4" />
               </div>
               <div>
-                <label htmlFor="story-lang" className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 block">
+                <label htmlFor="story-lang" className="text-xs font-bold uppercase tracking-wider text-[#2A2A2A] dark:text-[#F9F4ED] block">
                   Story Language
                 </label>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                <p className="text-[11px] text-[#77716D]">
                   Target output &amp; audio language
                 </p>
               </div>
@@ -163,7 +163,7 @@ export function HeadlinePicker({
               id="story-lang"
               value={displayLanguage}
               onChange={(e) => setDisplayLanguage(e.target.value)}
-              className="w-full px-3 py-2 rounded-2xl text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#F9F4ED] dark:bg-[#1F1D1B] border border-[#D8D0C8] dark:border-[#3E3835] text-[#2A2A2A] dark:text-[#F9F4ED] focus:outline-none focus:ring-2 focus:ring-[#AF695C]"
             >
               {LANGUAGES.map((lang) => (
                 <option key={lang.code} value={lang.code}>
@@ -176,21 +176,21 @@ export function HeadlinePicker({
 
         {/* Collapsible OCR Excerpt */}
         {ocrExcerpt && (
-          <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 overflow-hidden">
+          <div className="rounded-2xl border border-[#D8D0C8] dark:border-[#3E3835] bg-[#EDEAEA]/50 dark:bg-[#282523]/50 overflow-hidden">
             <button
               type="button"
               onClick={() => setShowExcerpt(!showExcerpt)}
-              className="w-full px-4 py-3 flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+              className="w-full px-4 py-3 flex items-center justify-between text-xs font-semibold text-[#77716D] hover:text-[#2A2A2A] dark:hover:text-[#F9F4ED]"
             >
               <span className="flex items-center space-x-2">
-                <FileText className="w-3.5 h-3.5 text-slate-400" />
+                <FileText className="w-3.5 h-3.5 text-[#AF695C]" />
                 <span>View Raw OCR Text Preview</span>
               </span>
               {showExcerpt ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
             {showExcerpt && (
-              <div className="p-4 pt-0 border-t border-slate-200/50 dark:border-slate-800/50">
-                <p className="text-xs font-mono text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap max-h-48 overflow-y-auto">
+              <div className="p-4 pt-0 border-t border-[#D8D0C8]/60 dark:border-[#3E3835]/60">
+                <p className="text-xs font-mono text-[#2A2A2A] dark:text-[#EDEAEA] leading-relaxed whitespace-pre-wrap max-h-48 overflow-y-auto">
                   {ocrExcerpt}
                 </p>
               </div>
@@ -202,9 +202,9 @@ export function HeadlinePicker({
         <button
           type="submit"
           disabled={isLoading || (!headlineText.trim() && candidates.length === 0)}
-          className="w-full py-4.5 px-6 rounded-3xl font-bold text-sm sm:text-base text-white bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600 hover:opacity-95 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-rose-500/20 transition-all flex items-center justify-center space-x-2.5 cursor-pointer"
+          className="w-full py-4.5 px-6 rounded-2xl font-bold text-sm sm:text-base text-[#F9F4ED] bg-[#AF695C] hover:bg-[#99594D] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer"
         >
-          <Sparkles className="w-5 h-5" />
+          <Sparkles className="w-5 h-5 text-[#F9F4ED]" />
           <span>{isLoading ? 'Building Evidence Story...' : 'Generate Evidence-Linked Story →'}</span>
         </button>
       </form>

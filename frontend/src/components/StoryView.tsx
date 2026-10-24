@@ -104,13 +104,13 @@ export function StoryView({ story, sessionId, displayLanguage, onLanguageChange 
   };
 
   return (
-    <div className="max-w-4xl mx-auto w-full space-y-8 pb-16 animate-in fade-in duration-300">
+    <div className="max-w-4xl mx-auto w-full space-y-8 pb-16 animate-in fade-in duration-300" style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Story Masthead Card */}
-      <div className="p-6 sm:p-8 rounded-3xl glass-card space-y-4 shadow-xl">
+      <div className="p-6 sm:p-8 rounded-[28px] bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] space-y-4 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-2">
           {story.newspaper_date && (
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20 font-mono">
-              <Calendar className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#AF695C]/10 text-[#AF695C] border border-[#AF695C]/20 font-mono">
+              <Calendar className="w-3.5 h-3.5 text-[#AF695C]" />
               <span>Publication Date: {story.newspaper_date}</span>
             </div>
           )}
@@ -119,7 +119,7 @@ export function StoryView({ story, sessionId, displayLanguage, onLanguageChange 
           <button
             onClick={handleReadStoryAloud}
             disabled={isSynthesizingStory}
-            className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600 hover:opacity-95 text-white shadow-md shadow-rose-500/20 transition disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold bg-[#AF695C] hover:bg-[#99594D] text-[#F9F4ED] shadow-sm transition disabled:opacity-50 cursor-pointer"
           >
             {isSynthesizingStory ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -130,7 +130,7 @@ export function StoryView({ story, sessionId, displayLanguage, onLanguageChange 
           </button>
         </div>
 
-        <h2 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight text-slate-900 dark:text-slate-50 leading-tight" dir="auto">
+        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#2A2A2A] dark:text-[#F9F4ED] leading-tight" dir="auto">
           {story.headline}
         </h2>
 
@@ -141,19 +141,19 @@ export function StoryView({ story, sessionId, displayLanguage, onLanguageChange 
 
         {/* Notices Banner (Collapsible if present) */}
         {story.notices && story.notices.length > 0 && (
-          <div className="mt-4 rounded-2xl bg-slate-100/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 overflow-hidden text-xs">
+          <div className="mt-4 rounded-2xl bg-[#F9F4ED] dark:bg-[#1F1D1B] border border-[#D8D0C8] dark:border-[#3E3835] overflow-hidden text-xs">
             <button
               onClick={() => setShowNotices(!showNotices)}
-              className="w-full px-4 py-2.5 flex items-center justify-between text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+              className="w-full px-4 py-2.5 flex items-center justify-between text-[#77716D] hover:text-[#2A2A2A] dark:hover:text-[#F9F4ED]"
             >
               <span className="flex items-center space-x-2 font-medium">
-                <AlertCircle className="w-4 h-4 text-amber-500" />
+                <AlertCircle className="w-4 h-4 text-[#AF695C]" />
                 <span>Verification &amp; Pipeline Notices ({story.notices.length})</span>
               </span>
               {showNotices ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
             {showNotices && (
-              <ul className="px-4 pb-3 space-y-1.5 text-slate-600 dark:text-slate-400 border-t border-slate-200 dark:border-white/5 pt-2 list-disc list-inside">
+              <ul className="px-4 pb-3 space-y-1.5 text-[#77716D] border-t border-[#D8D0C8] dark:border-[#3E3835] pt-2 list-disc list-inside">
                 {story.notices.map((n, i) => (
                   <li key={i}>{n}</li>
                 ))}
@@ -180,10 +180,10 @@ export function StoryView({ story, sessionId, displayLanguage, onLanguageChange 
 
       {/* Q&A History Section */}
       {qaHistory.length > 0 && (
-        <div className="space-y-4 pt-4 border-t border-slate-200/80 dark:border-white/10">
+        <div className="space-y-4 pt-4 border-t border-[#D8D0C8] dark:border-[#3E3835]">
           <div className="flex items-center space-x-2">
-            <MessageSquare className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-slate-100">
+            <MessageSquare className="w-5 h-5 text-[#AF695C]" />
+            <h3 className="font-bold text-lg text-[#2A2A2A] dark:text-[#F9F4ED]">
               Spoken &amp; Written Q&amp;A History
             </h3>
           </div>
@@ -220,8 +220,8 @@ export function StoryView({ story, sessionId, displayLanguage, onLanguageChange 
 
       {/* QA Error Feedback Banner */}
       {qaError && (
-        <div className="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/70 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs flex items-center space-x-2.5 shadow-sm">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-500" />
+        <div className="p-3.5 rounded-2xl bg-[#AF695C]/10 border border-[#AF695C]/30 text-[#AF695C] text-xs flex items-center space-x-2.5 shadow-sm">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 text-[#AF695C]" />
           <span>{qaError}</span>
         </div>
       )}

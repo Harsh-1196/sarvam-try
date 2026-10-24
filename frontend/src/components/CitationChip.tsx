@@ -19,16 +19,13 @@ export function CitationChip({ sourceId, source, quote, onSelect }: CitationChip
       type="button"
       onClick={() => onSelect(sourceId, quote)}
       aria-label={`View evidence source ${label}`}
-      className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition shadow-sm border ${
-        isS0
-          ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-900 dark:text-amber-200 border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/60'
-          : 'bg-sky-50 dark:bg-sky-950/50 text-sky-900 dark:text-sky-200 border-sky-200 dark:border-sky-800 hover:bg-sky-100 dark:hover:bg-sky-900/60'
-      }`}
+      className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-xl text-xs font-medium transition shadow-sm border border-[#D8D0C8] dark:border-[#3E3835] bg-[#F9F4ED] dark:bg-[#1F1D1B] text-[#2A2A2A] dark:text-[#EDEAEA] hover:border-[#AF695C] hover:text-[#AF695C]"
+      style={{ fontFamily: "'Poppins', sans-serif" }}
     >
       {isS0 ? (
-        <Newspaper className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+        <Newspaper className="w-3.5 h-3.5 text-[#AF695C]" />
       ) : (
-        <BookOpen className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+        <BookOpen className="w-3.5 h-3.5 text-[#AF695C]" />
       )}
       <span className="font-semibold">{label}</span>
     </button>

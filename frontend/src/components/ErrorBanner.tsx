@@ -14,19 +14,19 @@ export function ErrorBanner({ error, onRetry, onDismiss }: ErrorBannerProps) {
   if (!error) return null;
 
   return (
-    <div className="mb-6 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200 flex items-start justify-between shadow-sm animate-in fade-in duration-200">
+    <div className="mb-6 p-4 rounded-2xl bg-[#EDEAEA] border border-[#AF695C]/50 text-[#2A2A2A] flex items-start justify-between shadow-sm animate-in fade-in duration-200 font-sans">
       <div className="flex items-start space-x-3">
-        <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5 text-rose-600 dark:text-rose-400" />
+        <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#AF695C]" />
         <div>
           <div className="flex items-center space-x-2">
-            <span className="font-semibold text-sm">Action Needed</span>
+            <span className="font-semibold text-sm text-[#2A2A2A]">Action Needed</span>
             {error.code && (
-              <span className="px-2 py-0.5 text-xs font-mono rounded bg-rose-200/60 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300">
+              <span className="px-2 py-0.5 text-xs font-mono rounded bg-[#AF695C]/15 text-[#AF695C] border border-[#AF695C]/30">
                 {error.code}
               </span>
             )}
           </div>
-          <p className="text-xs sm:text-sm mt-1 text-rose-800 dark:text-rose-300">
+          <p className="text-xs sm:text-sm mt-1 text-[#77716D]">
             {error.message}
           </p>
         </div>
@@ -36,7 +36,7 @@ export function ErrorBanner({ error, onRetry, onDismiss }: ErrorBannerProps) {
         {error.retryable && onRetry && (
           <button
             onClick={onRetry}
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition shadow-sm"
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#AF695C] text-white hover:bg-[#99594D] transition shadow-sm"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Try Again</span>
@@ -45,7 +45,7 @@ export function ErrorBanner({ error, onRetry, onDismiss }: ErrorBannerProps) {
         {onDismiss && (
           <button
             onClick={onDismiss}
-            className="text-xs text-rose-600 dark:text-rose-400 hover:underline px-2 py-1"
+            className="text-xs text-[#AF695C] hover:underline px-2 py-1"
           >
             Dismiss
           </button>

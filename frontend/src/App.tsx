@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Newspaper, Activity, Moon, Sun, Sparkles, RefreshCw, FileText, Compass } from 'lucide-react';
+import { Newspaper, Activity, Moon, Sun, Sparkles, RefreshCw, FileText } from 'lucide-react';
 import { api } from './api/client';
 import type { HealthStatus, AppStage, HeadlineCandidate, Story } from './types';
 import { UploadScreen } from './components/UploadScreen';
@@ -7,7 +7,6 @@ import { ProgressStages } from './components/ProgressStages';
 import { HeadlinePicker } from './components/HeadlinePicker';
 import { StoryView } from './components/StoryView';
 import { ErrorBanner } from './components/ErrorBanner';
-import { EditorialTimeline } from './components/EditorialTimeline';
 import { usePolling } from './hooks/usePolling';
 
 export default function App() {
@@ -37,7 +36,6 @@ export default function App() {
   const [displayLanguage, setDisplayLanguage] = useState<string>('hi-IN');
   const [story, setStory] = useState<Story | null>(null);
   const [canUseNewspaperOnly, setCanUseNewspaperOnly] = useState<boolean>(false);
-  const [activeView, setActiveView] = useState<'newspaper' | 'innovation'>('newspaper');
 
   useEffect(() => {
     if (darkMode) {
@@ -213,61 +211,34 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${darkMode ? 'mesh-bg-dark text-slate-100' : 'mesh-bg-light text-slate-900'}`}>
+    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${darkMode ? 'mesh-bg-dark text-[#F9F4ED]' : 'mesh-bg-light text-[#2A2A2A]'}`}>
       {/* Top Header */}
-      <header className="border-b border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl sticky top-0 z-40">
+      <header className="border-b border-[#D8D0C8] dark:border-[#3E3835] bg-[#F9F4ED]/90 dark:bg-[#1F1D1B]/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between">
           <div className="flex items-center space-x-3.5 cursor-pointer" onClick={handleReset}>
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
+            <div className="w-11 h-11 rounded-2xl bg-[#AF695C] flex items-center justify-center text-[#F9F4ED] shadow-sm">
               <Newspaper className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="font-serif font-bold text-xl tracking-tight bg-gradient-to-r from-amber-600 via-rose-600 to-indigo-600 dark:from-amber-400 dark:via-rose-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                <h1 className="font-bold text-xl tracking-tight text-[#2A2A2A] dark:text-[#F9F4ED]">
                   KhabarLens
                 </h1>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#AF695C]/10 text-[#AF695C] border border-[#AF695C]/25">
                   Sarvam AI
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-[#77716D]">
                 Multilingual Evidence-Linked Newspaper Intelligence
               </p>
             </div>
-          </div>
-
-          {/* Navigation View Switcher */}
-          <div className="flex items-center space-x-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-            <button
-              onClick={() => setActiveView('newspaper')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center space-x-1.5 ${
-                activeView === 'newspaper'
-                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
-              }`}
-            >
-              <Newspaper className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Newspaper Studio</span>
-              <span className="sm:hidden">Studio</span>
-            </button>
-            <button
-              onClick={() => setActiveView('innovation')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center space-x-1.5 ${
-                activeView === 'innovation'
-                  ? 'bg-[#AF695C] text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-[#AF695C]'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Path to Innovation</span>
-            </button>
           </div>
 
           <div className="flex items-center space-x-3">
             {stage !== 'upload' && (
               <button
                 onClick={handleReset}
-                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition"
+                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#2A2A2A] dark:text-[#EDEAEA] bg-[#EDEAEA] dark:bg-[#282523] hover:bg-[#D8D0C8] border border-[#D8D0C8] dark:border-[#3E3835] transition"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>New Photo</span>
@@ -275,30 +246,25 @@ export default function App() {
             )}
 
             {/* Backend health status badge */}
-            <div className="hidden sm:flex items-center space-x-2 text-xs px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-              <Activity className={`w-3.5 h-3.5 ${health?.status === 'ok' ? 'text-emerald-500 animate-pulse' : 'text-amber-500'}`} />
+            <div className="hidden sm:flex items-center space-x-2 text-xs px-3 py-1.5 rounded-full bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] text-[#2A2A2A] dark:text-[#EDEAEA]">
+              <Activity className={`w-3.5 h-3.5 ${health?.status === 'ok' ? 'text-[#AF695C] animate-pulse' : 'text-[#77716D]'}`} />
               <span>{health ? `Connected (${health.models.llm})` : healthError ? 'Offline' : 'Connecting...'}</span>
             </div>
 
             {/* Dark mode toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition"
+              className="p-2 rounded-xl text-[#2A2A2A] dark:text-[#EDEAEA] bg-[#EDEAEA] dark:bg-[#282523] hover:bg-[#D8D0C8] border border-[#D8D0C8] dark:border-[#3E3835] transition"
               aria-label="Toggle theme"
             >
-              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+              {darkMode ? <Sun className="w-4 h-4 text-[#AF695C]" /> : <Moon className="w-4 h-4 text-[#77716D]" />}
             </button>
           </div>
         </div>
       </header>
 
       {/* Main Content Area */}
-      {activeView === 'innovation' ? (
-        <main className="flex-1 w-full bg-[#F9F4ED]">
-          <EditorialTimeline onBack={() => setActiveView('newspaper')} />
-        </main>
-      ) : (
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center">
         {error && (
           <div>
             <ErrorBanner
@@ -341,32 +307,19 @@ export default function App() {
         {stage === 'upload' && (
           <div className="space-y-8">
             <div className="text-center max-w-2xl mx-auto">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300 text-xs font-medium mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-sky-500" />
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#EDEAEA] dark:bg-[#282523] border border-[#D8D0C8] dark:border-[#3E3835] text-[#AF695C] text-xs font-medium mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-[#AF695C]" />
                 <span>23 Indian Languages · Sarvam Vision · 105B Reasoning · Bulbul Voice</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#2A2A2A] dark:text-[#F9F4ED]">
                 Turn Any Printed Newspaper into an Evidence-Grounded Story
               </h2>
-              <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400">
+              <p className="mt-3 text-sm sm:text-base text-[#77716D]">
                 Photograph an article in any Indian script, extract verified candidate headlines, discover cross-source perspectives, and converse with spoken Q&amp;A.
               </p>
             </div>
 
             <UploadScreen onUpload={handleUpload} isLoading={isLoading} initialFile={retryFile} />
-
-            {/* Editorial Timeline Showcase Button */}
-            <div className="pt-2 flex justify-center">
-              <button
-                type="button"
-                onClick={() => setActiveView('innovation')}
-                className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#F9F4ED] dark:bg-stone-900 border border-[#AF695C]/40 hover:border-[#AF695C] text-[#2A2A2A] dark:text-stone-200 text-xs font-semibold shadow-sm hover:shadow transition group"
-              >
-                <span className="w-2 h-2 rounded-full bg-[#AF695C] group-hover:scale-125 transition-transform" />
-                <span>Explore Timeline Design: Path to Innovation</span>
-                <span className="text-[#AF695C] group-hover:translate-x-0.5 transition-transform">→</span>
-              </button>
-            </div>
           </div>
         )}
 
@@ -403,11 +356,10 @@ export default function App() {
             }}
           />
         )}
-        </main>
-      )}
+      </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 py-4 text-center text-xs text-slate-500 dark:text-slate-400">
+      <footer className="border-t border-[#D8D0C8] dark:border-[#3E3835] py-4 text-center text-xs text-[#77716D]">
         KhabarLens · Powered by Sarvam AI &amp; Tavily · Built for Sarvam Hackathon
       </footer>
     </div>

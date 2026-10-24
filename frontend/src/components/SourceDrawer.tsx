@@ -26,32 +26,32 @@ export function SourceDrawer({ source, highlightQuote, isOpen, onClose }: Source
   const isS0 = source.kind === 'uploaded_newspaper' || source.id === 'S0';
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 overflow-hidden animate-in fade-in duration-200 font-sans">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-[#2A2A2A]/50 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md sm:max-w-lg bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col">
+        <div className="w-screen max-w-md sm:max-w-lg bg-[#F9F4ED] text-[#2A2A2A] shadow-2xl border-l border-[#D8D0C8] flex flex-col">
           {/* Header */}
-          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-start justify-between">
+          <div className="p-6 border-b border-[#D8D0C8] flex items-start justify-between bg-[#F9F4ED]">
             <div className="space-y-1 pr-4">
               <div className="flex items-center space-x-2">
-                <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#AF695C]/15 text-[#AF695C] border border-[#AF695C]/30">
                   {source.id}
                 </span>
-                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                <span className="text-xs font-medium text-[#77716D]">
                   {source.publisher || (isS0 ? 'Uploaded Newspaper' : 'Web Article')}
                 </span>
                 {source.machine_translated && (
-                  <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#EDEAEA] text-[#77716D] border border-[#D8D0C8]">
                     Machine-Translated
                   </span>
                 )}
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-snug" dir="auto">
+              <h3 className="text-lg font-bold text-[#2A2A2A] leading-snug" dir="auto">
                 {source.title}
               </h3>
             </div>
@@ -59,26 +59,26 @@ export function SourceDrawer({ source, highlightQuote, isOpen, onClose }: Source
             <button
               onClick={onClose}
               aria-label="Close drawer"
-              className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="p-2 rounded-xl text-[#77716D] hover:text-[#2A2A2A] hover:bg-[#EDEAEA] transition"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Metadata Bar */}
-          <div className="px-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4 text-xs text-slate-600 dark:text-slate-400">
+          <div className="px-6 py-3 bg-[#EDEAEA] border-b border-[#D8D0C8] flex flex-wrap items-center gap-4 text-xs text-[#77716D]">
             {source.published_at && (
               <div className="flex items-center space-x-1.5">
-                <Calendar className="w-3.5 h-3.5 text-indigo-500" />
-                <span>{source.published_at}</span>
+                <Calendar className="w-3.5 h-3.5 text-[#AF695C]" />
+                <span className="text-[#2A2A2A]">{source.published_at}</span>
               </div>
             )}
             <div className="flex items-center space-x-1.5">
-              <Globe className="w-3.5 h-3.5 text-purple-500" />
-              <span>{getLanguageName(source.language)}</span>
+              <Globe className="w-3.5 h-3.5 text-[#AF695C]" />
+              <span className="text-[#2A2A2A]">{getLanguageName(source.language)}</span>
             </div>
             {isS0 && (
-              <div className="flex items-center space-x-1.5 text-amber-600 dark:text-amber-400 font-medium">
+              <div className="flex items-center space-x-1.5 text-[#AF695C] font-semibold">
                 <Newspaper className="w-3.5 h-3.5" />
                 <span>Uploaded Newspaper Clipping</span>
               </div>
@@ -89,12 +89,12 @@ export function SourceDrawer({ source, highlightQuote, isOpen, onClose }: Source
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Highlighted Quote Callout if provided */}
             {highlightQuote && (
-              <div className="p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 space-y-2">
-                <div className="flex items-center space-x-2 text-xs font-bold text-sky-800 dark:text-sky-300">
+              <div className="p-4 rounded-2xl bg-[#EDEAEA] border border-[#AF695C]/40 space-y-2">
+                <div className="flex items-center space-x-2 text-xs font-bold text-[#AF695C]">
                   <Quote className="w-3.5 h-3.5" />
                   <span>Cited Verbatim Evidence Quote</span>
                 </div>
-                <blockquote className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 italic leading-relaxed" dir="auto">
+                <blockquote className="text-xs sm:text-sm text-[#2A2A2A] italic leading-relaxed" dir="auto">
                   "{highlightQuote}"
                 </blockquote>
               </div>
@@ -102,11 +102,11 @@ export function SourceDrawer({ source, highlightQuote, isOpen, onClose }: Source
 
             {/* Article Body */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#77716D] mb-3">
                 {source.machine_translated ? 'Translated Body Context' : 'Original Text Excerpt'}
               </h4>
               <div
-                className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-sans whitespace-pre-wrap"
+                className="text-xs sm:text-sm text-[#2A2A2A] leading-relaxed whitespace-pre-wrap"
                 dir="auto"
               >
                 {source.model_text}
@@ -115,26 +115,26 @@ export function SourceDrawer({ source, highlightQuote, isOpen, onClose }: Source
           </div>
 
           {/* Footer Action */}
-          <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between">
+          <div className="p-4 border-t border-[#D8D0C8] bg-[#EDEAEA] flex items-center justify-between">
             {source.url && !isS0 ? (
               <a
                 href={source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold shadow-sm transition"
+                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-[#AF695C] hover:bg-[#99594D] text-white text-xs font-semibold shadow-sm transition"
               >
                 <span>Open Original Article</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
             ) : (
-              <span className="text-xs text-slate-500 dark:text-slate-400">
+              <span className="text-xs text-[#77716D]">
                 Primary source: Photographed newspaper page
               </span>
             )}
 
             <button
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition"
+              className="px-4 py-2 text-xs font-semibold text-[#2A2A2A] hover:bg-[#D8D0C8]/50 rounded-xl transition"
             >
               Close
             </button>

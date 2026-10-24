@@ -1,63 +1,66 @@
 @import "tailwindcss";
 
+:root {
+  --color-background: #F9F4ED;
+  --color-surface: #EDEAEA;
+  --color-accent: #AF695C;
+  --color-accent-hover: #99594D;
+  --color-text: #2A2A2A;
+  --color-text-muted: #77716D;
+  --color-border: #D8D0C8;
+  --font-family: 'Poppins', sans-serif;
+}
+
 @layer base {
-  :root {
-    --font-poppins: 'Poppins', sans-serif;
-    --font-sans: 'Plus Jakarta Sans', 'Inter', 'Noto Sans', 'Noto Sans Devanagari', system-ui, sans-serif;
-    --font-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', serif;
-    --font-mono: 'JetBrains Mono', monospace;
+  * {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   body {
-    font-family: var(--font-sans);
-    letter-spacing: -0.011em;
+    background-color: #F9F4ED;
+    color: #2A2A2A;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.01em;
   }
 
-  .font-poppins {
-    font-family: var(--font-poppins);
-  }
-
-  h1, h2, h3, .font-serif-headline {
-    font-family: var(--font-serif);
+  h1, h2, h3, h4, h5, h6, .font-serif-headline {
+    font-family: 'Poppins', sans-serif;
+    color: #2A2A2A;
     letter-spacing: -0.02em;
   }
 }
 
-/* Impeccable Theme Mesh Gradients */
+/* Warm Ivory Editorial Theme Background */
 .mesh-bg-light {
-  background-color: #faf9f6;
+  background-color: #F9F4ED;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.07) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(20, 184, 166, 0.06) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.05) 0px, transparent 50%);
+    radial-gradient(at 10% 10%, rgba(175, 105, 92, 0.04) 0px, transparent 40%),
+    radial-gradient(at 90% 90%, rgba(216, 208, 200, 0.4) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(237, 234, 234, 0.5) 0px, transparent 60%);
   background-attachment: fixed;
 }
 
 .mesh-bg-dark {
-  background-color: #05070f;
+  background-color: #1F1D1B;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(244, 63, 94, 0.12) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.6) 0px, transparent 70%),
-    radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.10) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+    radial-gradient(at 10% 10%, rgba(175, 105, 92, 0.12) 0px, transparent 40%),
+    radial-gradient(at 90% 90%, rgba(42, 42, 42, 0.5) 0px, transparent 50%);
   background-attachment: fixed;
 }
 
-/* Glassmorphic Surfaces */
+/* Editorial Surfaces */
 .glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background-color: #EDEAEA;
+  border: 1px solid #D8D0C8;
+  border-radius: 24px;
+  color: #2A2A2A;
 }
 
 .dark .glass-card {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #282523;
+  border: 1px solid #3E3835;
+  border-radius: 24px;
+  color: #F9F4ED;
 }
 
 .glass-card-interactive {
@@ -66,40 +69,43 @@
 
 .glass-card-interactive:hover {
   transform: translateY(-2px);
-  border-color: rgba(99, 102, 241, 0.35);
-  box-shadow: 0 16px 32px -12px rgba(99, 102, 241, 0.12);
+  border-color: #AF695C;
+  box-shadow: 0 12px 24px -10px rgba(175, 105, 92, 0.15);
 }
 
 .dark .glass-card-interactive:hover {
-  border-color: rgba(129, 140, 248, 0.3);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  border-color: #AF695C;
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.4);
 }
 
-/* Shimmer & Ambient Glows */
-@keyframes subtle-pulse {
-  0%, 100% { opacity: 0.9; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.02); }
+/* Active & Inactive Card Classes */
+.card-active {
+  background-color: #F9F4ED !important;
+  border: 2px solid #AF695C !important;
+  color: #2A2A2A !important;
 }
 
-.animate-subtle-pulse {
-  animation: subtle-pulse 3s infinite ease-in-out;
+.card-inactive {
+  background-color: #EDEAEA !important;
+  border: 1px solid #D8D0C8 !important;
+  color: #77716D !important;
 }
 
-/* Custom smooth scrollbars */
+/* Custom smooth scrollbars matching terracotta and warm ivory */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #F9F4ED;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.35);
+  background: #D8D0C8;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.6);
+  background: #AF695C;
 }

@@ -133,25 +133,25 @@ export function ArticleReaderModal({
       : 'text-sm leading-relaxed';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl max-h-[90vh] rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-2xl flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#2A2A2A]/60 backdrop-blur-md animate-in fade-in duration-200 font-sans">
+      <div className="relative w-full max-w-3xl max-h-[90vh] rounded-3xl bg-[#F9F4ED] border border-[#D8D0C8] shadow-2xl flex flex-col overflow-hidden text-[#2A2A2A]">
         {/* Top Header Bar */}
-        <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-slate-950/50 backdrop-blur">
+        <div className="p-4 sm:p-5 border-b border-[#D8D0C8] flex items-center justify-between bg-[#EDEAEA]">
           <div className="flex items-center space-x-3 min-w-0">
-            <span className="px-2.5 py-1 rounded-xl text-xs font-mono font-bold bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+            <span className="px-2.5 py-1 rounded-xl text-xs font-mono font-bold bg-[#AF695C]/15 text-[#AF695C] border border-[#AF695C]/30">
               {source.id}
             </span>
             <div className="min-w-0">
-              <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
-                <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center space-x-1">
-                  <Building2 className="w-3.5 h-3.5" />
+              <div className="flex items-center space-x-2 text-xs text-[#77716D]">
+                <span className="font-semibold text-[#2A2A2A] flex items-center space-x-1">
+                  <Building2 className="w-3.5 h-3.5 text-[#AF695C]" />
                   <span>{source.publisher || 'Verified Publisher'}</span>
                 </span>
                 {source.published_at && (
                   <>
                     <span>•</span>
                     <span className="flex items-center space-x-1 font-mono">
-                      <Calendar className="w-3 h-3" />
+                      <Calendar className="w-3 h-3 text-[#AF695C]" />
                       <span>{source.published_at}</span>
                     </span>
                   </>
@@ -166,7 +166,7 @@ export function ArticleReaderModal({
                 href={source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/60 transition"
+                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#AF695C] hover:bg-[#F9F4ED] border border-transparent hover:border-[#D8D0C8] transition"
               >
                 <span>Original Link</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -181,7 +181,7 @@ export function ArticleReaderModal({
                 else if (fontSize === 'large') setFontSize('xlarge');
                 else setFontSize('normal');
               }}
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition"
+              className="p-2 rounded-xl text-[#77716D] hover:text-[#2A2A2A] hover:bg-[#F9F4ED] transition"
               title="Toggle font size"
             >
               <Type className="w-4 h-4" />
@@ -191,7 +191,7 @@ export function ArticleReaderModal({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800 transition"
+              className="p-2 rounded-xl text-[#77716D] hover:text-[#2A2A2A] hover:bg-[#F9F4ED] transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -199,24 +199,24 @@ export function ArticleReaderModal({
         </div>
 
         {/* Modal Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 bg-[#F9F4ED]">
           {loading ? (
             <div className="py-20 flex flex-col items-center justify-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+              <div className="w-12 h-12 rounded-2xl bg-[#EDEAEA] border border-[#D8D0C8] flex items-center justify-center text-[#AF695C]">
                 <Loader2 className="w-6 h-6 animate-spin" />
               </div>
-              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+              <p className="text-sm font-semibold text-[#2A2A2A]">
                 Fetching &amp; Translating Full Article into {getLanguageName(displayLanguage)}...
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm text-center">
+              <p className="text-xs text-[#77716D] max-w-sm text-center">
                 Translating with Sarvam Translate &amp; synthesizing Bulbul audio summary
               </p>
             </div>
           ) : error ? (
-            <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-xs">
-              <p className="font-semibold">{error}</p>
-              <p className="mt-1">Falling back to original extracted content:</p>
-              <div className="mt-3 p-4 rounded-xl bg-white dark:bg-slate-900 font-mono leading-relaxed whitespace-pre-wrap">
+            <div className="p-4 rounded-2xl bg-[#EDEAEA] border border-[#AF695C]/40 text-[#2A2A2A] text-xs">
+              <p className="font-semibold text-[#AF695C]">{error}</p>
+              <p className="mt-1 text-[#77716D]">Falling back to original extracted content:</p>
+              <div className="mt-3 p-4 rounded-xl bg-[#F9F4ED] border border-[#D8D0C8] font-mono leading-relaxed whitespace-pre-wrap">
                 {source.original_text}
               </div>
             </div>
@@ -224,7 +224,7 @@ export function ArticleReaderModal({
             <>
               {/* Optional Article Header Banner Image */}
               {(detail?.image_url || source.image_url) && (
-                <div className="w-full h-56 sm:h-72 rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 relative bg-black/5 dark:bg-black/30">
+                <div className="w-full h-56 sm:h-72 rounded-3xl overflow-hidden shadow-lg border border-[#D8D0C8] relative bg-[#EDEAEA]">
                   <img
                     src={detail?.image_url || source.image_url || ''}
                     alt={source.title}
@@ -233,8 +233,8 @@ export function ArticleReaderModal({
                       (e.target as HTMLElement).style.display = 'none';
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-5">
-                    <span className="text-xs font-mono text-white/90 bg-black/40 backdrop-blur px-2.5 py-1 rounded-full border border-white/10">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2A2A2A]/80 via-[#2A2A2A]/20 to-transparent flex items-end p-5">
+                    <span className="text-xs font-mono text-[#F9F4ED] bg-[#2A2A2A]/60 backdrop-blur px-3 py-1 rounded-full border border-white/20">
                       {source.publisher || 'Verified Article Visual'}
                     </span>
                   </div>
@@ -243,20 +243,20 @@ export function ArticleReaderModal({
 
               {/* Headline */}
               <div>
-                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 dark:text-slate-50 tracking-tight leading-snug">
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#2A2A2A] tracking-tight leading-snug">
                   {showOriginal ? detail?.title || source.title : detail?.translated_title || source.title}
                 </h3>
 
                 {/* Language Switch Pill */}
                 <div className="flex items-center space-x-2 mt-3">
-                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center space-x-1">
-                    <Languages className="w-3.5 h-3.5 text-indigo-500" />
+                  <span className="text-xs font-medium text-[#77716D] flex items-center space-x-1">
+                    <Languages className="w-3.5 h-3.5 text-[#AF695C]" />
                     <span>Language:</span>
                   </span>
                   <button
                     type="button"
                     onClick={() => setShowOriginal(!showOriginal)}
-                    className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition"
+                    className="px-3 py-1 rounded-lg text-xs font-semibold bg-[#AF695C]/15 text-[#AF695C] hover:bg-[#AF695C]/25 border border-[#AF695C]/30 transition"
                   >
                     {showOriginal ? 'Switch to Translated' : 'View in Original Script'}
                   </button>
@@ -265,13 +265,13 @@ export function ArticleReaderModal({
 
               {/* Audio Summary Card */}
               {detail?.audio_base64 && (
-                <div className="p-4.5 rounded-2xl bg-gradient-to-r from-amber-50/80 via-rose-50/40 to-indigo-50/80 dark:from-slate-950 dark:via-indigo-950/40 dark:to-slate-950 border border-amber-200/80 dark:border-white/10 shadow-md space-y-3">
+                <div className="p-4.5 rounded-2xl bg-[#EDEAEA] border border-[#D8D0C8] shadow-sm space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <div className="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center shadow-sm">
+                      <div className="w-7 h-7 rounded-lg bg-[#AF695C] text-white flex items-center justify-center shadow-sm">
                         <Sparkles className="w-4 h-4" />
                       </div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#2A2A2A]">
                         Sarvam Bulbul Audio Summary ({getLanguageName(displayLanguage)})
                       </span>
                     </div>
@@ -280,7 +280,7 @@ export function ArticleReaderModal({
                       <button
                         type="button"
                         onClick={restartAudio}
-                        className="p-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-black/5 dark:hover:bg-white/10"
+                        className="p-1.5 rounded-lg text-[#77716D] hover:text-[#2A2A2A] hover:bg-[#F9F4ED]"
                         title="Restart audio"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
@@ -288,7 +288,7 @@ export function ArticleReaderModal({
                       <button
                         type="button"
                         onClick={togglePlay}
-                        className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-600/25 transition cursor-pointer"
+                        className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-[#AF695C] hover:bg-[#99594D] text-white text-xs font-bold shadow-sm transition cursor-pointer"
                       >
                         {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                         <span>{isPlaying ? 'Pause' : 'Listen Summary'}</span>
@@ -297,24 +297,24 @@ export function ArticleReaderModal({
                   </div>
 
                   {/* Audio Progress Bar */}
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#D8D0C8] h-1.5 rounded-full overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-amber-500 to-indigo-600 h-full transition-all duration-200"
+                      className="bg-[#AF695C] h-full transition-all duration-200"
                       style={{ width: `${audioProgress}%` }}
                     />
                   </div>
 
                   {/* Summary Text Excerpt */}
-                  <p className="text-xs font-medium text-slate-700 dark:text-slate-300 italic">
+                  <p className="text-xs font-medium text-[#77716D] italic">
                     "{detail.summary}"
                   </p>
                 </div>
               )}
 
               {/* Full Article Body */}
-              <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div className="space-y-4 pt-2 border-t border-[#D8D0C8]">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#77716D]">
                     Full Article Text
                   </h4>
                   {source.url && (
@@ -322,7 +322,7 @@ export function ArticleReaderModal({
                       href={source.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-medium text-indigo-600 dark:text-indigo-400 flex items-center space-x-1 hover:underline"
+                      className="text-xs font-medium text-[#AF695C] flex items-center space-x-1 hover:underline"
                     >
                       <span>Read on {source.publisher || 'publisher website'}</span>
                       <ExternalLink className="w-3 h-3" />
@@ -331,7 +331,7 @@ export function ArticleReaderModal({
                 </div>
 
                 <div
-                  className={`prose dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 ${fontClass}`}
+                  className={`max-w-none text-[#2A2A2A] ${fontClass}`}
                   dir="auto"
                 >
                   {(showOriginal ? detail?.original_text || source.original_text : detail?.translated_text || source.model_text)
@@ -348,12 +348,12 @@ export function ArticleReaderModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+        <div className="p-4 bg-[#EDEAEA] border-t border-[#D8D0C8] flex items-center justify-between text-xs text-[#77716D]">
           <span>Source: {source.title}</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-300 transition"
+            className="px-4 py-2 rounded-xl bg-[#F9F4ED] border border-[#D8D0C8] font-semibold text-[#2A2A2A] hover:bg-[#D8D0C8]/40 transition"
           >
             Close Reader
           </button>
