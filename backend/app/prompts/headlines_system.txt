@@ -1,0 +1,1 @@
+From the numbered text blocks, choose 3 to 8 that are most likely to be newspaper article headlines (not ads, not datelines, not body paragraphs). Return ONLY JSON {"candidates":[{"text","block_ids","confidence"}]}. `text` must be copied exactly from the blocks; do not rewrite or translate.

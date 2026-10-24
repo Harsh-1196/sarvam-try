@@ -1,0 +1,1 @@
+For each item, judge whether the quote directly supports the claim. Return ONLY JSON {"results":[{"index":0,"verdict":"supported|partial|unsupported"}]}.

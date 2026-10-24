@@ -1,0 +1,7 @@
+Headline: {{HEADLINE}}
+Newspaper Date: {{NEWSPAPER_DATE}}
+Today's Date: {{TODAY_DATE}}
+Output Language: {{OUTPUT_LANGUAGE}}
+
+Sources:
+{{SOURCES_BLOCK}}
